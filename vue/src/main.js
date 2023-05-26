@@ -7,7 +7,10 @@ import './assets/img/sta1.png'
 import './assets/img/japanmap1.png'
 import './assets/img/point1.jpg'
 import './assets/img/star2.png'
-
+// import filter from './router/filter'
+// for (const key in filters) {
+//   Vue.filter(key, filters[key])
+// }
 // 将自动注册所有组件为全局组件
 import dataV from '@jiaminghi/data-view'
 Vue.use(dataV)

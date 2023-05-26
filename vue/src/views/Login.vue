@@ -1,19 +1,29 @@
 <template>
   <div class="wrapper">
-    <div style="margin: 200px auto; background-color: #FFF0F5; width: 350px; height: 300px; padding: 20px; border-radius: 10px">
-      <div style="margin: 20px 0; text-align: center; font-size: 24px"><b>Login In</b></div>
+    <div style="margin: 140px auto; background-color: #FFF0F5; width: 450px; height: 400px; padding: 20px; border-radius: 10px">
+      <center>
+      <el-header style="font-size: 12px; border-bottom: 1px solid #ccc; line-height: 60px; display: flex">
+        <div style="flex: 1; font-size: 20px">
+
+          <span><img src="../assets/logosunseer.png" alt="" style="width: 40px; position: relative; top: 10px; right: 10px"><b style="text-align: center">社員管理システム</b></span>
+        </div>
+      </el-header>
+      </center>
+      <div style="margin: 20px 0; margin-top: 30px; text-align: center; font-size: 26px"><b>Login In</b></div>
 
 
       <center>
-      <el-input size="medium" prefix-icon="el-icon-user" v-model="login.username"></el-input>
+      <el-input style="width: 280px" size="large" prefix-icon="el-icon-user" v-model="login.username"></el-input>
       </center>
       <center>
-      <el-input size="medium" prefix-icon="el-icon-lock"  show-password v-model="login.password"></el-input>
+      <el-input style="margin-top: 11px; width: 280px" size="large" prefix-icon="el-icon-lock"  show-password v-model="login.password"></el-input>
       </center>
       <div style="margin: 10px 0; text-align: right" class="me-login-button">
         <center>
-        <el-button  @click="Home()" type="info" round style="margin-top: 20px; padding: 12px 45px; font-family: Calibri" size="small" autocomplete="off">ログイン</el-button>
+        <el-button  @click="Home()" type="info" round style="margin-top: 20px; padding: 12px 45px; font-family: Calibri" size="medium" autocomplete="off">ログイン</el-button>
         </center>
+
+
 <!--        <div class="button" @click="login" >ログイン</div>-->
 
       </div>
@@ -88,9 +98,23 @@ export default {
     //
     // },
     Home() {
-      console.log("ログイン")
-      this.$router.push('/Home')
+
+      fetch("http://localhost:9090/login?username="+this.login.username+"&password="+this.login.password)
+          .then(res => res.json())
+          .then(res => {
+            if (res > 0) {
+              this.$router.push('/Home')
+             // 清除缓存
+              history.pushState(null, null, document.URL);
+              window.addEventListener("popstate",function(e) {
+                history.pushState(null, null, document.URL);
+              }, false);
+            } else {
+              alert("パスワードもしくはユーザーが間違っています")
+            }
+          })
     },
+
     show(){
       if(this.flag){
         this.$refs.eyes.src="../../static/img/eyes.png";
@@ -121,6 +145,14 @@ export default {
    color: lightslategray;
 
  }
+ .el-button--info,.el-button--info:focus,.el-button--info.is-active, .el-button--info:active{background:linear-gradient(to right,#FFC0CB, #4682B4);}
+
+ .el-button--info:hover {
+   background: #8cd8da;
+   border-color: #8cd8da;
+   color: #FFF;
+ }
+
  .button{
    cursor: pointer;
    border-radius: 20px;

@@ -26,8 +26,8 @@ public class UserController {
 
 
     // 新增和修改
-    @PostMapping
-    public boolean save(@RequestBody User user) {
+    @PostMapping("/add")
+    public int save(@RequestBody User user) {
         return userService.saveuser(user);
 
     }
@@ -51,14 +51,22 @@ public class UserController {
    public Map<String, Object> findPage(@RequestParam Integer pageNum,
                                        @RequestParam Integer pageSize,
                                        @RequestParam String username,
-                                       @RequestParam String hobby) {
+                                       @RequestParam String hobby,
+                                       @RequestParam String birthday,
+                                       @RequestParam String address,
+                                       @RequestParam String phone,
+                                       @RequestParam String email) {
         pageNum = (pageNum - 1) * pageSize;
         //氏名より检索
         username = "%" + username + "%";
         hobby = "%" + hobby + "%";
-       List<User> data = userMapper.selectPage(pageNum, pageSize, username, hobby);
-        System.out.println("AAAAAA"+username+"BBBB"+hobby);
-        Integer total = userMapper.SelectTotal();
+        birthday = "%" + birthday + "%";
+        email = "%" + email + "%";
+        address = "%" + address + "%";
+        phone = "%" + phone + "%";
+       List<User> data = userMapper.selectPage(pageNum, pageSize, username, hobby, birthday, email, address, phone);
+        System.out.println("AAAAAA"+username+"BBBB"+hobby+"CCCC"+birthday+"DDDDD"+email+"EEEEE"+address+"FFFFFF"+phone);
+        Integer total = userMapper.SelectTotal(pageNum, pageSize, username, hobby, birthday, email, address, phone);
         Map<String, Object> res = new HashMap<>();
         res.put("data", data);
         res.put("total", total);
